@@ -40,3 +40,6 @@ coverage/
 
 # Build artifacts
 build/
+# Build artifacts
+.next/
+*.tsbuildinfo

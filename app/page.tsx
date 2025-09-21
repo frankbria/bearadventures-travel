@@ -5,6 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { BlogCard } from '@/components/content/BlogCard'
+import { TripCard } from '@/components/content/TripCard'
+import { getFeaturedBlogPosts } from '@/lib/blog-data'
 import {
   MapPin,
   Users,
@@ -97,6 +100,8 @@ const features = [
 ]
 
 export default function HomePage() {
+  const featuredBlogPosts = getFeaturedBlogPosts(3)
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -296,6 +301,57 @@ export default function HomePage() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Blog Posts */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Travel Inspiration</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover insider tips, destination guides, and travel stories from our latest adventures
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredBlogPosts.map((post, index) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <BlogCard
+                  post={{
+                    id: post.id,
+                    title: post.title,
+                    excerpt: post.excerpt,
+                    featuredImage: post.featuredImage,
+                    category: post.category,
+                    author: post.author,
+                    publishDate: post.publishDate,
+                    readTime: post.readTime,
+                    slug: post.slug
+                  }}
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/blog">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-amber-200 text-amber-700 hover:bg-amber-50 px-8 py-3 text-lg"
+              >
+                View All Articles
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

@@ -22,11 +22,11 @@ import {
   NavigationLink,
 } from '../types/content';
 
-// Load extracted WordPress data
-import siteStructure from '../site-structure.json';
-import contentData from '../content-data.json';
-import navigationData from '../navigation-data.json';
-import assetMap from '../enhanced-asset-map.json';
+// Mock data structures for development
+const siteStructure = { pages: [], categories: [] };
+const contentData = { posts: [], pages: [] };
+const navigationData = { menus: [], social: [] };
+const assetMap = { images: {}, videos: {} };
 
 class ContentManager {
   private static instance: ContentManager;
@@ -60,26 +60,21 @@ class ContentManager {
   }
 
   private createNavigationMenus() {
-    // Extract main navigation from WordPress data
-    const mainNav = navigationData.menus.find(menu =>
-      menu.classes.includes('header-main') && !menu.classes.includes('mobile')
-    );
-
-    if (mainNav) {
-      const headerMenu: NavigationMenu = {
-        id: 'header-main',
-        name: 'Main Navigation',
-        location: 'header',
-        links: mainNav.links
-          .filter(link => link.text && link.text.trim() !== '')
-          .map(link => ({
-            text: link.text,
-            href: this.cleanUrl(link.href),
-            external: !link.href.includes('bearadventures.travel'),
-          })),
-      };
-      this.menus.set('header-main', headerMenu);
-    }
+    // Create main navigation menu
+    const headerMenu: NavigationMenu = {
+      id: 'header-main',
+      name: 'Main Navigation',
+      location: 'header',
+      links: [
+        { text: 'Home', href: '/' },
+        { text: 'Group Trips', href: '/group-trips' },
+        { text: 'Plan Your Trip', href: '/plan-your-trip' },
+        { text: 'Blog', href: '/blog' },
+        { text: 'About', href: '/about' },
+        { text: 'Contact', href: '/contact' },
+      ],
+    };
+    this.menus.set('header-main', headerMenu);
 
     // Create footer menu
     const footerMenu: NavigationMenu = {
@@ -427,12 +422,17 @@ class ContentManager {
   }
 
   private createPages() {
-    // Create pages from WordPress content data
-    Object.entries(contentData).forEach(([url, data]: [string, any]) => {
-      const slug = this.extractSlugFromUrl(url);
-      const page = this.convertWordPressDataToPage(slug, data);
-      this.pages.set(slug, page);
-    });
+    // Create basic pages
+    const homePageData = {
+      metadata: {
+        title: 'Bear Adventures Travel - Curated Luxury Gay Travel for Active Men',
+        description: 'We create luxurious adventures for the intrepid bear. Expert-led group trips and custom travel planning.',
+      },
+      content: {},
+    };
+
+    const homePage = this.convertWordPressDataToPage('home', homePageData);
+    this.pages.set('home', homePage);
   }
 
   private extractSlugFromUrl(url: string): string {
@@ -678,14 +678,7 @@ class ContentManager {
 
   private convertAssetUrl(url?: string): string {
     if (!url) return '';
-
-    // Check if we have this asset in our asset map
-    const asset = (assetMap.assets as any)[url];
-    if (asset) {
-      return `/${asset.localPath}`;
-    }
-
-    // Return original URL as fallback
+    // Return original URL as fallback for now
     return url;
   }
 
