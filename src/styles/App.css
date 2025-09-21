@@ -5,7 +5,7 @@
 
 /* WordPress migration styles - to be updated during content integration */
 .wp-content {
-  @apply prose prose-lg max-w-none;
+  @apply max-w-none;
 }
 
 .wp-content h1 {

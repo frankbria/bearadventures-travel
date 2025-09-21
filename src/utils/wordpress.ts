@@ -1,4 +1,4 @@
-import type { WordPressPost, WordPressPage, MediaAsset } from '@/types'
+import type { WordPressPost, MediaAsset } from '@/types'
 
 /**
  * Utility functions for WordPress content migration

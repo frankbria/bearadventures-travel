@@ -12,7 +12,7 @@ export interface WordPressPost {
   tags: string[]
   featuredImage?: string
   author: string
-  meta: Record<string, any>
+  meta: Record<string, unknown>
 }
 
 export interface WordPressPage {
@@ -26,7 +26,7 @@ export interface WordPressPage {
   parent?: number
   template?: string
   featuredImage?: string
-  meta: Record<string, any>
+  meta: Record<string, unknown>
 }
 
 export interface MediaAsset {
