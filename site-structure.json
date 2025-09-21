@@ -1,0 +1,42 @@
+{
+  "baseUrl": "https://bearadventures.travel",
+  "crawledPages": 16,
+  "discoveredPages": 15,
+  "visitedUrls": [
+    "https://bearadventures.travel",
+    "https://bearadventures.travel/",
+    "https://bearadventures.travel/group-trips/",
+    "https://bearadventures.travel/plan-your-trip/",
+    "https://bearadventures.travel/blog/",
+    "https://bearadventures.travel/about-us/",
+    "https://bearadventures.travel/contact/",
+    "https://bearadventures.travel/tips-tricks/the-best-time-to-go-to-cappadocia/",
+    "https://bearadventures.travel/adventures/elementor-597/",
+    "https://bearadventures.travel/luxury-travel/10-luxury-hotels-every-luxury-traveler-should-visit/",
+    "https://bearadventures.travel/destinations/central-america/costa-rica-gay-travel-ultimate-bear-adventures-guide/",
+    "https://bearadventures.travel/destinations/europe/iceland-gay-travel-a-spectacular-voyage-of-adventure-acceptance/",
+    "https://bearadventures.travel/featured/gay-travel-barcelona-guide-embracing-the-european-lgbtq-scene/",
+    "https://bearadventures.travel/terms-and-conditions/",
+    "https://bearadventures.travel/privacy-policy/",
+    "mailto:frank@bearadventures.travel"
+  ],
+  "discoveredUrls": [
+    "https://bearadventures.travel/",
+    "https://bearadventures.travel/group-trips/",
+    "https://bearadventures.travel/plan-your-trip/",
+    "https://bearadventures.travel/blog/",
+    "https://bearadventures.travel/about-us/",
+    "https://bearadventures.travel/contact/",
+    "https://bearadventures.travel/tips-tricks/the-best-time-to-go-to-cappadocia/",
+    "https://bearadventures.travel/adventures/elementor-597/",
+    "https://bearadventures.travel/luxury-travel/10-luxury-hotels-every-luxury-traveler-should-visit/",
+    "https://bearadventures.travel/destinations/central-america/costa-rica-gay-travel-ultimate-bear-adventures-guide/",
+    "https://bearadventures.travel/destinations/europe/iceland-gay-travel-a-spectacular-voyage-of-adventure-acceptance/",
+    "https://bearadventures.travel/featured/gay-travel-barcelona-guide-embracing-the-european-lgbtq-scene/",
+    "https://bearadventures.travel/terms-and-conditions/",
+    "https://bearadventures.travel/privacy-policy/",
+    "mailto:frank@bearadventures.travel"
+  ],
+  "crawledAt": "2025-09-21T20:21:43.737Z",
+  "totalUniqueUrls": 16
+}

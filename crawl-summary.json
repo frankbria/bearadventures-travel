@@ -1,0 +1,23 @@
+{
+  "crawlSummary": {
+    "totalPagesVisited": 16,
+    "totalPagesDiscovered": 15,
+    "totalImages": 241,
+    "pageTypes": [
+      "homepage",
+      "general",
+      "blog",
+      "about",
+      "contact"
+    ],
+    "isWordPressSite": true,
+    "crawlDate": "2025-09-21T20:21:43.746Z"
+  },
+  "nextSteps": [
+    "Review content-data.json for page structures",
+    "Check assets-inventory.json for media files to download",
+    "Analyze navigation-data.json for site menu structure",
+    "Use design-data.json for styling information",
+    "Plan React component structure based on content patterns"
+  ]
+}
