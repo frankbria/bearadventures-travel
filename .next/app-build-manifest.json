@@ -1,0 +1,45 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-1b400f1de436fe28.js",
+      "static/chunks/fd9d1056-ad15f396ddf9b7e5.js",
+      "static/chunks/117-62533f63bba9e0db.js",
+      "static/chunks/main-app-444d64722a64f37e.js",
+      "static/chunks/app/_not-found/page-12f067ceb7415e55.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-1b400f1de436fe28.js",
+      "static/chunks/fd9d1056-ad15f396ddf9b7e5.js",
+      "static/chunks/117-62533f63bba9e0db.js",
+      "static/chunks/main-app-444d64722a64f37e.js",
+      "static/css/c7f7140909590a3f.css",
+      "static/chunks/231-b97186ea55c8ff91.js",
+      "static/chunks/335-2cd3be32af788795.js",
+      "static/chunks/app/layout-8030f66dc1cff1cf.js"
+    ],
+    "/group-trips/page": [
+      "static/chunks/webpack-1b400f1de436fe28.js",
+      "static/chunks/fd9d1056-ad15f396ddf9b7e5.js",
+      "static/chunks/117-62533f63bba9e0db.js",
+      "static/chunks/main-app-444d64722a64f37e.js",
+      "static/chunks/231-b97186ea55c8ff91.js",
+      "static/chunks/app/group-trips/page-f69bbde64ba56eee.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-1b400f1de436fe28.js",
+      "static/chunks/fd9d1056-ad15f396ddf9b7e5.js",
+      "static/chunks/117-62533f63bba9e0db.js",
+      "static/chunks/main-app-444d64722a64f37e.js",
+      "static/chunks/231-b97186ea55c8ff91.js",
+      "static/chunks/app/page-b05d539cd6cd2845.js"
+    ],
+    "/plan-your-trip/page": [
+      "static/chunks/webpack-1b400f1de436fe28.js",
+      "static/chunks/fd9d1056-ad15f396ddf9b7e5.js",
+      "static/chunks/117-62533f63bba9e0db.js",
+      "static/chunks/main-app-444d64722a64f37e.js",
+      "static/chunks/231-b97186ea55c8ff91.js",
+      "static/chunks/app/plan-your-trip/page-c993b67cdbe941d9.js"
+    ]
+  }
+}
