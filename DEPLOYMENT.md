@@ -15,6 +15,15 @@ This guide provides step-by-step instructions to deploy the Bear Adventures Trav
 - Domain `bearadventures.travel` with DNS control
 - SSL certificate capability (Let's Encrypt recommended)
 
+## Security Notes
+
+**Important**: This deployment guide follows security best practices:
+- The `bearadventures` system user has no sudo privileges
+- All privileged operations (sudo commands) are run as root/admin user
+- Global package installations (like PM2) are done as root before switching users
+- The application user only has access to its own files and processes
+- Clear separation between root tasks and application user tasks
+
 ## Step-by-Step Deployment
 
 ### 1. Server Preparation
@@ -44,6 +53,18 @@ nginx -v        # Confirm nginx is installed
 # Create dedicated user for the application
 sudo adduser --system --group --home /var/www/bearadventures bearadventures
 sudo usermod -aG www-data bearadventures
+
+# Assign shell to enable login (fixes "This account is currently not available" error)
+sudo usermod -s /bin/bash bearadventures
+```
+
+#### 1.4 Install Global Dependencies
+```bash
+# Install PM2 globally for process management (as root)
+sudo npm install -g pm2
+
+# Verify PM2 installation
+pm2 --version
 ```
 
 ### 2. Application Setup
@@ -64,14 +85,32 @@ ls -la
 
 #### 2.2 Install Dependencies
 ```bash
-# Install production dependencies
+# Install production dependencies (as bearadventures user)
 npm ci --only=production
-
-# Install PM2 globally for process management
-sudo npm install -g pm2
 ```
 
-#### 2.3 Environment Configuration
+#### 2.3 Build Application
+```bash
+# Build the Next.js application (as bearadventures user)
+npm run build
+
+# Verify build completed successfully
+ls -la .next/
+
+# Exit back to root user
+exit
+```
+
+### 3. System Configuration (as root)
+
+#### 3.1 Create Log Directory
+```bash
+# Create log directory and set permissions
+sudo mkdir -p /var/log/bearadventures
+sudo chown bearadventures:bearadventures /var/log/bearadventures
+```
+
+#### 3.2 Environment Configuration
 ```bash
 # Create production environment file
 sudo nano /var/www/bearadventures/app/.env.production
@@ -80,23 +119,22 @@ sudo nano /var/www/bearadventures/app/.env.production
 NODE_ENV=production
 NEXT_PUBLIC_APP_URL=https://beta.bearadventures.travel
 PORT=3000
+
+# Set proper permissions for env file
+sudo chown bearadventures:bearadventures /var/www/bearadventures/app/.env.production
+sudo chmod 600 /var/www/bearadventures/app/.env.production
 ```
 
-#### 2.4 Build Application
+### 4. Process Management with PM2
+
+#### 4.1 Create PM2 Configuration (as bearadventures user)
 ```bash
-# Build the Next.js application
-npm run build
+# Switch back to application user
+sudo su - bearadventures
+cd /var/www/bearadventures/app
 
-# Verify build completed successfully
-ls -la .next/
-```
-
-### 3. Process Management with PM2
-
-#### 3.1 Create PM2 Configuration
-```bash
 # Create PM2 ecosystem file
-nano /var/www/bearadventures/app/ecosystem.config.js
+nano ecosystem.config.js
 ```
 
 Add the following content:
@@ -123,32 +161,35 @@ module.exports = {
 };
 ```
 
-#### 3.2 Create Log Directory
+#### 4.2 Start Application with PM2
 ```bash
-sudo mkdir -p /var/log/bearadventures
-sudo chown bearadventures:bearadventures /var/log/bearadventures
-```
-
-#### 3.3 Start Application with PM2
-```bash
-# Start the application
+# Start the application (as bearadventures user)
 pm2 start ecosystem.config.js
 
 # Save PM2 configuration
 pm2 save
 
-# Generate startup script
-pm2 startup
-# Follow the instructions provided by the command above
-
 # Verify application is running
 pm2 status
 pm2 logs bearadventures-beta
+
+# Exit back to root user
+exit
 ```
 
-### 4. nginx Configuration
+#### 4.3 Setup PM2 Startup (as root)
+```bash
+# Generate startup script for bearadventures user
+sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u bearadventures --hp /var/www/bearadventures
 
-#### 4.1 Create nginx Site Configuration
+# Start and enable PM2 startup service
+sudo systemctl enable pm2-bearadventures
+sudo systemctl start pm2-bearadventures
+```
+
+### 5. nginx Configuration
+
+#### 5.1 Create nginx Site Configuration
 ```bash
 sudo nano /etc/nginx/sites-available/beta.bearadventures.travel
 ```
@@ -268,7 +309,7 @@ server {
 }
 ```
 
-#### 4.2 Enable Site and Test Configuration
+#### 5.2 Enable Site and Test Configuration
 ```bash
 # Enable the site
 sudo ln -s /etc/nginx/sites-available/beta.bearadventures.travel /etc/nginx/sites-enabled/
@@ -280,14 +321,14 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-### 5. SSL Certificate Setup
+### 6. SSL Certificate Setup
 
-#### 5.1 Install Certbot
+#### 6.1 Install Certbot
 ```bash
 sudo apt install certbot python3-certbot-nginx -y
 ```
 
-#### 5.2 Obtain SSL Certificate
+#### 6.2 Obtain SSL Certificate
 ```bash
 # Make sure DNS is pointing to your server first
 # Then obtain certificate
@@ -296,7 +337,7 @@ sudo certbot --nginx -d beta.bearadventures.travel
 # Follow the prompts to complete certificate installation
 ```
 
-#### 5.3 Auto-renewal Setup
+#### 6.3 Auto-renewal Setup
 ```bash
 # Test auto-renewal
 sudo certbot renew --dry-run
@@ -305,7 +346,7 @@ sudo certbot renew --dry-run
 sudo systemctl status certbot.timer
 ```
 
-### 6. DNS Configuration
+### 7. DNS Configuration
 
 Configure your DNS provider to point the subdomain to your server:
 
@@ -316,9 +357,9 @@ Value: [YOUR_SERVER_IP]
 TTL: 300 (or your preferred value)
 ```
 
-### 7. Firewall Configuration
+### 8. Firewall Configuration
 
-#### 7.1 Configure UFW (if using)
+#### 8.1 Configure UFW (if using)
 ```bash
 # Allow nginx and SSH
 sudo ufw allow 'Nginx Full'
@@ -329,9 +370,9 @@ sudo ufw enable
 sudo ufw status
 ```
 
-### 8. File Permissions and Security
+### 9. File Permissions and Security
 
-#### 8.1 Set Proper Permissions
+#### 9.1 Set Proper Permissions
 ```bash
 # Set ownership
 sudo chown -R bearadventures:www-data /var/www/bearadventures/app
@@ -344,9 +385,9 @@ sudo chmod -R 644 /var/www/bearadventures/app/.next/static/
 sudo chmod 600 /var/www/bearadventures/app/.env.production
 ```
 
-### 9. Monitoring and Maintenance
+### 10. Monitoring and Maintenance
 
-#### 9.1 Log Monitoring Setup
+#### 10.1 Log Monitoring Setup
 ```bash
 # Create log rotation configuration
 sudo nano /etc/logrotate.d/bearadventures
@@ -368,7 +409,7 @@ Add the following content:
 }
 ```
 
-#### 9.2 Health Check Script
+#### 10.2 Health Check Script
 ```bash
 # Create health check script
 sudo nano /usr/local/bin/bearadventures-health-check.sh
@@ -399,7 +440,7 @@ Make it executable:
 sudo chmod +x /usr/local/bin/bearadventures-health-check.sh
 ```
 
-#### 9.3 Cron Job for Health Checks
+#### 10.3 Cron Job for Health Checks
 ```bash
 # Add cron job for health checks every 5 minutes
 sudo crontab -e
@@ -408,9 +449,9 @@ sudo crontab -e
 */5 * * * * /usr/local/bin/bearadventures-health-check.sh
 ```
 
-### 10. Deployment Script for Updates
+### 11. Deployment Script for Updates
 
-#### 10.1 Create Deployment Script
+#### 11.1 Create Deployment Script
 ```bash
 sudo nano /usr/local/bin/deploy-bearadventures.sh
 ```
