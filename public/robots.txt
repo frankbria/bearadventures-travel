@@ -1,0 +1,26 @@
+# robots.txt for Bear Adventures Travel
+# https://beta.bearadventures.travel/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow important pages
+Allow: /
+Allow: /blog
+Allow: /group-trips
+Allow: /plan-your-trip
+Allow: /about
+Allow: /contact
+Allow: /blog/*
+
+# Sitemap location
+Sitemap: https://beta.bearadventures.travel/sitemap.xml
+
+# Crawl-delay (optional - adjust based on server capacity)
+# Crawl-delay: 1
+

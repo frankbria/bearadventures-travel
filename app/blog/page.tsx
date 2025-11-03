@@ -1,18 +1,34 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Search, Filter } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { BlogCard } from '@/components/content/BlogCard'
-import { blogPosts } from '@/lib/blog-data'
+import { getBlogPosts, type BlogPost } from '@/lib/blog-data'
 
 const categories = ['All', 'Destinations', 'Featured', 'Tips & Tricks', 'Luxury Travel']
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        const posts = await getBlogPosts()
+        setBlogPosts(posts)
+      } catch (error) {
+        console.error('Error loading blog posts:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadPosts()
+  }, [])
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory

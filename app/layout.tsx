@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { siteConfig } from '@/lib/site-config'
+import { OrganizationStructuredData, WebsiteStructuredData } from '@/components/StructuredData'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -43,6 +44,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <OrganizationStructuredData />
+        <WebsiteStructuredData />
         <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-grow">

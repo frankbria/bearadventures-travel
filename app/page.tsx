@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -99,8 +97,8 @@ const features = [
   }
 ]
 
-export default function HomePage() {
-  const featuredBlogPosts = getFeaturedBlogPosts(3)
+export default async function HomePage() {
+  const featuredBlogPosts = await getFeaturedBlogPosts(3)
 
   return (
     <div className="min-h-screen">
