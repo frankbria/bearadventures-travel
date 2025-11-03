@@ -1,22 +1,8 @@
 // Sample blog data based on extracted WordPress content
-export interface BlogPost {
-  id: string
-  title: string
-  excerpt: string
-  content: string
-  featuredImage: string
-  category: string
-  author: {
-    name: string
-    avatar?: string
-  }
-  publishDate: string
-  readTime: string
-  slug: string
-  tags: string[]
-}
+// This file contains only the data array
+// The BlogPost interface is defined in lib/blog-data.ts
 
-export const blogPosts: BlogPost[] = [
+export const blogPosts = [
   {
     id: '1',
     title: 'Costa Rica Gay Travel: Ultimate Bear Adventures Guide',

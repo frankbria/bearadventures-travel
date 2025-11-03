@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST='{"lib/blog-data.ts -> ./strapi":{"id":89358,"files":["static/chunks/358.e6c78f761123c3e0.js"]}}';
+self.__REACT_LOADABLE_MANIFEST='{"lib/blog-data.ts -> ./strapi.ts":{"id":89358,"files":["static/chunks/358.e6c78f761123c3e0.js"]}}';

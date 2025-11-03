@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { BlogCard } from '@/components/content/BlogCard'
 import { TripCard } from '@/components/content/TripCard'
-import { getFeaturedBlogPosts } from '@/lib/blog-data'
+import { getFeaturedBlogPostsSync, type BlogPost } from '@/lib/blog-data'
 import {
   MapPin,
   Users,
@@ -97,8 +97,11 @@ const features = [
   }
 ]
 
-export default async function HomePage() {
-  const featuredBlogPosts = await getFeaturedBlogPosts(3)
+export default function HomePage() {
+  // Use synchronous function for static generation
+  // Temporarily commented out to debug build issue
+  // const featuredBlogPosts = getFeaturedBlogPostsSync(3)
+  const featuredBlogPosts: BlogPost[] = []
 
   return (
     <div className="min-h-screen">
@@ -313,31 +316,30 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredBlogPosts.map((post, index) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <BlogCard
-                  post={{
-                    id: post.id,
-                    title: post.title,
-                    excerpt: post.excerpt,
-                    featuredImage: post.featuredImage,
-                    category: post.category,
-                    author: post.author,
-                    publishDate: post.publishDate,
-                    readTime: post.readTime,
-                    slug: post.slug
-                  }}
-                />
-              </motion.div>
-            ))}
-          </div>
+          {featuredBlogPosts.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredBlogPosts.map((post) => (
+                <div key={post.id}>
+                  <BlogCard
+                    post={{
+                      id: post.id,
+                      title: post.title,
+                      excerpt: post.excerpt,
+                      featuredImage: post.featuredImage,
+                      category: post.category,
+                      author: post.author,
+                      publishDate: post.publishDate,
+                      readTime: post.readTime,
+                      slug: post.slug
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {featuredBlogPosts.length === 0 && (
+            <div className="text-center text-gray-600">No featured posts available</div>
+          )}
 
           <div className="text-center mt-12">
             <Link href="/blog">
