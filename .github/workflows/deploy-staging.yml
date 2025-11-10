@@ -41,6 +41,7 @@ jobs:
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
             npm ci
+            rm -rf .next
             npm run build
             pm2 restart bearadventures-staging || pm2 start npm --name "bearadventures-staging" -- start
 
