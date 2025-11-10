@@ -100,10 +100,8 @@ const features = [
 ]
 
 export default function HomePage() {
-  // Use synchronous function for static generation
-  // Temporarily commented out to debug build issue
-  // const featuredBlogPosts = getFeaturedBlogPostsSync(3)
-  const featuredBlogPosts: BlogPost[] = []
+  // Use synchronous function with existing blog data
+  const featuredBlogPosts = getFeaturedBlogPostsSync(3)
 
   return (
     <div className="min-h-screen">
