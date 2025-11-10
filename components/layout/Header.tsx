@@ -40,54 +40,6 @@ interface HeaderProps {
 }
 
 const menuItems: MenuItem[] = [
-  {
-    title: 'Group Trips',
-    url: '/group-trips',
-    items: [
-      {
-        title: 'Costa Rica Adventure',
-        description: '9-day jungle and ocean bear adventure through Costa Rica',
-        icon: <MapPin className="size-5 shrink-0" />,
-        url: '/group-trips/costa-rica-adventure',
-      },
-      {
-        title: 'Antarctica Expedition',
-        description: 'Epic expedition to Antarctica with luxury accommodations',
-        icon: <Users className="size-5 shrink-0" />,
-        url: '/group-trips/antarctica-expedition',
-      },
-      {
-        title: 'European Getaways',
-        description: 'Curated city breaks and cultural experiences across Europe',
-        icon: <Calendar className="size-5 shrink-0" />,
-        url: '/group-trips/european-getaways',
-      },
-    ],
-  },
-  {
-    title: 'Plan Your Trip',
-    url: '/plan-your-trip',
-    items: [
-      {
-        title: 'Custom Itineraries',
-        description: 'Personalized travel plans tailored to your interests',
-        icon: <Calendar className="size-5 shrink-0" />,
-        url: '/plan-your-trip/custom-itineraries',
-      },
-      {
-        title: 'Travel Guides',
-        description: 'Comprehensive guides for LGBTQ+ friendly destinations',
-        icon: <BookOpen className="size-5 shrink-0" />,
-        url: '/plan-your-trip/travel-guides',
-      },
-      {
-        title: 'Destinations',
-        description: 'Explore our featured destinations around the world',
-        icon: <MapPin className="size-5 shrink-0" />,
-        url: '/destinations',
-      },
-    ],
-  },
   { title: 'Blog', url: '/blog' },
   { title: 'About', url: '/about' },
   { title: 'Contact', url: '/contact' },
@@ -125,11 +77,8 @@ export default function Header({ className }: HeaderProps) {
           </div>
 
           <div className="flex items-center gap-4">
-            <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-              <Link href="/contact">Plan My Trip</Link>
-            </Button>
             <Button asChild size="sm" className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium">
-              <Link href="/group-trips">Join Adventure</Link>
+              <Link href="/plan-your-trip">Plan My Trip</Link>
             </Button>
           </div>
         </nav>
@@ -186,11 +135,8 @@ export default function Header({ className }: HeaderProps) {
 
                   <div className="border-t pt-6">
                     <div className="flex flex-col gap-3">
-                      <Button asChild variant="ghost" className="justify-start text-muted-foreground hover:text-foreground">
-                        <Link href="/contact">Plan My Trip</Link>
-                      </Button>
                       <Button asChild className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium">
-                        <Link href="/group-trips">Join Adventure</Link>
+                        <Link href="/plan-your-trip">Plan My Trip</Link>
                       </Button>
                     </div>
                   </div>
