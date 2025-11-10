@@ -44,7 +44,8 @@ jobs:
             rm -rf .next
             npm run build
             pm2 delete bearadventures-staging || true
-            pm2 start npm --name "bearadventures-staging" -- start
+            PORT=3001 pm2 start npm --name "bearadventures-staging" -- start
+            pm2 save
 
       - name: Verify deployment
         run: |
