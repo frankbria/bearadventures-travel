@@ -51,7 +51,8 @@ jobs:
             npm ci
             rm -rf .next
             npm run build
-            pm2 restart bearadventures-production || pm2 start npm --name "bearadventures-production" -- start
+            pm2 delete bearadventures-production || true
+            pm2 start npm --name "bearadventures-production" -- start
 
       - name: Verify deployment
         run: |

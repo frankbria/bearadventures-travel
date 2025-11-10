@@ -43,7 +43,8 @@ jobs:
             npm ci
             rm -rf .next
             npm run build
-            pm2 restart bearadventures-staging || pm2 start npm --name "bearadventures-staging" -- start
+            pm2 delete bearadventures-staging || true
+            pm2 start npm --name "bearadventures-staging" -- start
 
       - name: Verify deployment
         run: |
