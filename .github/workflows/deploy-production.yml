@@ -1,0 +1,77 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:  # Manual trigger only
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm production deployment'
+        required: true
+        default: 'no'
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'deploy'
+    environment:
+      name: production
+      url: https://bearadventures.travel
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Run smoke tests
+        run: npm test
+        continue-on-error: true
+
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_USER }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          port: ${{ secrets.PRODUCTION_PORT || 22 }}
+          script: |
+            cd ${{ secrets.PRODUCTION_DEPLOY_PATH }}
+            git pull origin main
+            npm ci
+            npm run build
+            pm2 restart bearadventures-production || pm2 start npm --name "bearadventures-production" -- start
+
+      - name: Verify deployment
+        run: |
+          sleep 15
+          curl -f https://bearadventures.travel || exit 1
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ Production deployment successful: https://bearadventures.travel"
+          else
+            echo "❌ Production deployment failed"
+            exit 1
+          fi
+
+      - name: Create deployment tag
+        if: success()
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          TAG="production-$(date +%Y%m%d-%H%M%S)"
+          git tag -a "$TAG" -m "Production deployment $TAG"
+          git push origin "$TAG"

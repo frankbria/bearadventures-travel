@@ -1,0 +1,60 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://beta.bearadventures.travel
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Deploy to staging server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_PORT || 22 }}
+          script: |
+            cd ${{ secrets.STAGING_DEPLOY_PATH }}
+            git pull origin main
+            npm ci
+            npm run build
+            pm2 restart bearadventures-staging || pm2 start npm --name "bearadventures-staging" -- start
+
+      - name: Verify deployment
+        run: |
+          sleep 10
+          curl -f https://beta.bearadventures.travel || exit 1
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ Staging deployment successful: https://beta.bearadventures.travel"
+          else
+            echo "❌ Staging deployment failed"
+            exit 1
+          fi
