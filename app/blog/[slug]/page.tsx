@@ -13,13 +13,14 @@ import { BlogPostStructuredData } from '@/components/StructuredData'
 import { notFound } from 'next/navigation'
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getBlogPostBySlug(params.slug)
+  const { slug } = await params
+  const post = await getBlogPostBySlug(slug)
   const featuredPosts = await getFeaturedBlogPosts(3)
   const relatedPosts = featuredPosts.filter(p => p.id !== post?.id).slice(0, 2)
 
