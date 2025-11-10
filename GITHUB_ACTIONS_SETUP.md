@@ -80,27 +80,29 @@ Go to **Settings** > **Secrets and variables** > **Actions**
 
 #### Environment Secrets (Staging)
 
-Click on "staging" environment > Add secret:
+Click on "staging" environment > Add environment secrets:
 
 ```
-STAGING_HOST=<your-staging-server-ip-or-domain>
-STAGING_USER=<ssh-username>
-STAGING_SSH_KEY=<private-ssh-key-content>
-STAGING_PORT=22
-STAGING_DEPLOY_PATH=/var/www/beta.bearadventures.travel
+HOST=<your-staging-server-ip-or-domain>
+USER=<ssh-username>
+SSH_KEY=<private-ssh-key-content>
+PORT=22
+DEPLOY_PATH=/var/www/beta.bearadventures.travel
 ```
 
 #### Environment Secrets (Production)
 
-Click on "production" environment > Add secret:
+Click on "production" environment > Add environment secrets:
 
 ```
-PRODUCTION_HOST=<your-production-server-ip-or-domain>
-PRODUCTION_USER=<ssh-username>
-PRODUCTION_SSH_KEY=<private-ssh-key-content>
-PRODUCTION_PORT=22
-PRODUCTION_DEPLOY_PATH=/var/www/bearadventures.travel
+HOST=<your-production-server-ip-or-domain>
+USER=<ssh-username>
+SSH_KEY=<private-ssh-key-content>
+PORT=22
+DEPLOY_PATH=/var/www/bearadventures.travel
 ```
+
+**Note:** The secrets are scoped to each environment, so you use the same names (HOST, USER, etc.) in both environments with different values.
 
 ### Step 3: Server Setup
 

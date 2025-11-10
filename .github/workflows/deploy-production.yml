@@ -41,12 +41,12 @@ jobs:
       - name: Deploy to production server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.PRODUCTION_HOST }}
-          username: ${{ secrets.PRODUCTION_USER }}
-          key: ${{ secrets.PRODUCTION_SSH_KEY }}
-          port: ${{ secrets.PRODUCTION_PORT || 22 }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT || 22 }}
           script: |
-            cd ${{ secrets.PRODUCTION_DEPLOY_PATH }}
+            cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
             npm ci
             npm run build

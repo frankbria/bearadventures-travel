@@ -33,12 +33,12 @@ jobs:
       - name: Deploy to staging server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.STAGING_HOST }}
-          username: ${{ secrets.STAGING_USER }}
-          key: ${{ secrets.STAGING_SSH_KEY }}
-          port: ${{ secrets.STAGING_PORT || 22 }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT || 22 }}
           script: |
-            cd ${{ secrets.STAGING_DEPLOY_PATH }}
+            cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
             npm ci
             npm run build
