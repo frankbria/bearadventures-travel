@@ -51,7 +51,6 @@ const footerSections: FooterSection[] = [
   {
     label: 'Travel',
     links: [
-      { title: 'Group Trips', href: '/group-trips' },
       { title: 'Custom Itineraries', href: '/plan-your-trip' },
       { title: 'Travel Guides', href: '/blog' },
       { title: 'LGBTQ+ Travel', href: '/featured' },
